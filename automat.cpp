@@ -7,6 +7,7 @@ enum struct zustand {
     auswahl,
     bezhalen,
     ausgabe,
+    wartung,
     ende
 };
 
