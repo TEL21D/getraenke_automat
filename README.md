@@ -17,7 +17,7 @@ Funktionen/Methoden des Automats:
 | int getraenkeAnzahl | eventuell ein Vector von `int`, nicht vergessen es gibt verschiedene Sorten
 | enum getraenkeSorte | könnte man z.B. als enum darstellen
 | int getraenkePreis | Preis eines Getränks
-| int geldImAutomat | Speichert das vorhandene Gekd im Automat
+| int geldImAutomat | Speichert das vorhandene Geld im Automat
 | int preis | Preis des Getränks
 | int bezahlt | Bereits eingeworfenes Geld oder der noch fehlende Betrag
 
