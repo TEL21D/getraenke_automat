@@ -97,6 +97,7 @@ void getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl) {
     std::cout <<  "1. 100 Cent\n";
     std::cout <<  "2. 200 Cent\n";
     std::cout <<  "3. 50 Cent\n";
+    std::cout <<  "10. Zurück zur Getränkeauswahl\n";
     while (betrag > 0) {
         switch (input)
         {
