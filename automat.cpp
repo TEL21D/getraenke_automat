@@ -30,6 +30,9 @@ int main(int argc, char const *argv[])
     // Variable für den Zustand
     zustand state = zustand::auswahl;
     // Ein Vector um die Getränke abzuspeichern
+    std::vector<s_getraenk> getraenke = {
+
+    };
 
     std::vector<s_getraenk> getraenke = {
         {"Cola", 250, 4},
@@ -50,7 +53,7 @@ int main(int argc, char const *argv[])
             state = zustand::bezahlen;
             break;
         case zustand::bezahlen:
-            getreank
+            //getreank
             break;
         case zustand::ausgabe:
             /* code */
