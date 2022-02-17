@@ -31,10 +31,6 @@ int main(int argc, char const *argv[])
     zustand state = zustand::auswahl;
     // Ein Vector um die Getränke abzuspeichern
     std::vector<s_getraenk> getraenke = {
-
-    };
-
-    std::vector<s_getraenk> getraenke = {
         {"Cola", 250, 4},
         {"Coke Zero", 200, 4},
         {"Fanta", 250, 0},
@@ -70,7 +66,7 @@ int main(int argc, char const *argv[])
         }
     }
 
-    return 0;
+    return EXIT_FAILURE;
 }
 
 int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke) {
