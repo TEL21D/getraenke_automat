@@ -20,10 +20,10 @@ struct s_getraenk
 };
 
 
-int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke);
-void getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl);
+int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke, zustand &status);
+bool getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl);
 void getraenkAusgeben(const std::vector<s_getraenk> &getraenke);
-void geldEinwerfen();
+void wartungsModus(zustand &status, const std::vector<s_getraenk> &getraenke);
 
 int main(int argc, char const *argv[])
 {
@@ -33,8 +33,8 @@ int main(int argc, char const *argv[])
 
     std::vector<s_getraenk> getraenke = {
         {"Cola", 250, 4},
-        {"Coke Zero", 200, 4},
-        {"Fanta", 250, 0},
+        {"Coke Zero", 200, 1},
+        {"Fanta", 250,  0},
         {"Wasser", 100, 10}
     };
 
@@ -46,17 +46,21 @@ int main(int argc, char const *argv[])
         switch (state)
         {
         case zustand::auswahl:
-            auswahl = getraenkAuswaehlen(getraenke);
-            state = zustand::bezahlen;
+            auswahl = getraenkAuswaehlen(getraenke, state);
+            if (auswahl >= 0)
+                state = zustand::bezahlen;
             break;
         case zustand::bezahlen:
-            getraenkBezahlen(getraenke, auswahl);
+            getraenkBezahlen(getraenke, auswahl) ? state = zustand::ausgabe : state = zustand::auswahl;
             break;
         case zustand::ausgabe:
-            /* code */
+            getraenke[auswahl]._anzahl--;
+            std::cout <<  "Getränk wird ausgegeben, bitte entnehmen!\n";
+
+            state = zustand::auswahl;
             break;
         case zustand::wartung:
-            /* code */
+            wartungsModus(state, getraenke);
             break;
         case zustand::ende:
             std::cout << "\nGetränkeautomat fährt herunter\n";
@@ -68,7 +72,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke) {
+int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke, zustand &status) {
     int in;
     while (true)
     {
@@ -77,7 +81,20 @@ int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke) {
         {
             std::cout << " " << i+1 << ": " << getraenke[i]._name << " Preis: " << getraenke[i]._preis << "\n";
         }
+        std::cout << "\n " << "10: " << "Beenden\n";
+        std::cout << "\n " << "999: " << "Warungsmodus\n";
+
         std::cin >> in;
+        if (in == 999)
+        {
+            status = zustand::wartung;
+            return -1;
+        }
+        if (in == 10)
+        {
+            status = zustand::ende;
+            return -1;
+        }
 
         if (getraenke[in-1]._anzahl >= 1)
         {
@@ -89,7 +106,7 @@ int getraenkAuswaehlen(const std::vector<s_getraenk> &getraenke) {
     }
 }
 
-void getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl) {
+bool getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl) {
     int betrag = getraenke[auswahl]._preis;
     int input = 0;
     std::cout <<  "Bitte werfen Sie " << betrag << " Cent in den Automaten ein\n";
@@ -99,6 +116,8 @@ void getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl) {
     std::cout <<  "3. 50 Cent\n";
     std::cout <<  "10. Zurück zur Getränkeauswahl\n";
     while (betrag > 0) {
+        std::cout <<  "\n\tEs fehlen noch " << betrag << " Cent\n";
+        std::cin >> input;
         switch (input)
         {
         case 1:
@@ -110,13 +129,31 @@ void getraenkBezahlen(const std::vector<s_getraenk> &getraenke, int auswahl) {
         case 3:
             betrag -= 50;
             break;
+        case 10:
+            /* Zurück zur Getränkeauswahl */
+            return false;
+            break;
         default:
             break;
         }
-        std::cout <<  "Es fehlen noch " << betrag << " Cent\n";
     }
     // Auf Rückgeld prüfen
     if(betrag < 0) {
-        std::cout <<  " Rückgeld: " << abs(betrag) << " Cent\n";
+        std::cout <<  "\n\tRückgeld: " << abs(betrag) << " Cent\n";
     }
+    return true;
+}
+
+
+void wartungsModus(zustand &status, const std::vector<s_getraenk> &getraenke) {
+  int eingabe;
+  std::cout << "Willkommen im Wartungsmodus\n1: Getränke auflisten\n10: Zurück\n";
+  std::cin >> eingabe;
+  if(eingabe == 1) {
+      for (auto el: getraenke)
+      {
+          std::cout << " - " << el._name << ": " <<  " Anzahl: "  << el._anzahl<< " Preis: " << el._preis << "\n";
+      }
+  }
+  if(eingabe == 10) status = zustand::auswahl;
 }
