@@ -1,5 +1,7 @@
 # Modellierung und Programmierung eines Getränkeautomaten
 
+[**Lösungvorschlag**](https://github.com/TEL21D/getraenke_automat/tree/loesung_2)
+
 
 |Der Automat hat eine bestimmte Anzahl an Erfrischungsgetränken unterschiedlicher Sorten. Der Automat verfügt über einen Geldeinwurf, ein Display zur Anzeige von Informationen, Knöpfe zur Getränkeauswahl und ein Ausgabefach.|<img src="https://www.dhuenn.com/wp/wp-content/uploads/2017/10/sandenvendo-g-drink-dm6-front.jpg" width="250"/>
 |---|---
